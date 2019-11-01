@@ -1,4 +1,4 @@
-programa = ";b;c;a"
+programa = ";b;c"
 
 --Grafo de exemplo 
 grafo = [(1,2,'a'),(1,3,'b'),(3,4,'c'),(3,5,'a'),(3,6,'b')]
@@ -12,6 +12,7 @@ transicaoPossivel arestas exec
     | [ 1 | (a,b,c)<-arestas, c== exec] /= [] = True
     | otherwise = False
 
+percorrerPrograma [] grafo noOrigem = print "True"
 percorrerPrograma programa grafo noOrigem = 
  do
    if head programa == ';'
@@ -20,11 +21,10 @@ percorrerPrograma programa grafo noOrigem =
               let vizinhos = getArestas grafo noOrigem
               if transicaoPossivel vizinhos subprograma
                 then do
-                       print vizinhos
                        let proximoNo = getDestino vizinhos
                        let continuacao = drop 2 programa
                        let destinos = getDestino vizinhos subprograma
-                       print destinos
-                      --  let resposta = percorrerPrograma (take 1 proximoNo)
+                       print continuacao
+                       percorrerPrograma continuacao grafo (head destinos)
                 else print "XABLAU"
         else print "False"
