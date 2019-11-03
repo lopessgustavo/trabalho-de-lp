@@ -1,7 +1,7 @@
-programa = ";b;c"
+programa = ";b;ab"
 
 --Grafo de exemplo 
-grafo = [(1,2,'a'),(1,3,'b'),(3,4,'c'),(3,5,'a'),(3,6,'b')]
+grafo = [(1,2,'a'),(1,3,'b'),(3,4,'c'),(3,5,'a'),(5,6,'b')]
 
 --Retorna as arestas de um nó do grafo
 getArestas grafo noOrigem = [(a,b,c) | (a,b,c)<-grafo, a==noOrigem]
@@ -24,4 +24,6 @@ percorrerPrograma programa grafo noOrigem =
                          destinos = getDestino vizinhos subprograma  
                       in percorrerPrograma continuacao grafo (head destinos)  
                 else let resp = False in resp
-    else let resp = False in resp
+    else let subprograma = head programa
+             vizinhos = getArestas grafo noOrigem
+           in transicaoPossivel vizinhos subprograma
