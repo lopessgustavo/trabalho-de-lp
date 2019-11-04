@@ -5,5 +5,5 @@
 ## Implementação: 
 -  O programa deve ser feito em alguma linguagem de programação funcional como Haskel, Racket ou Scheme, fazendo uso apenas de instruções típicas de linguagens funcionais. Mesmo que a linguagem dê suporte a instruções de paradigma imperativo e/ou outros paradigmas, essas não poderão ser utilizadas. Demais linguagens de programação devem ser consultadas previamente. Demais ferramentas devem ser consultadas previamente.
 
-##Instruções: 
+## Instruções: 
 - Para executar o código, é preciso a instalação do [Haskell Platform](https://www.haskell.org/platform/). Em seguida é preciso abrir o terminal na pasta em que está o código e executar o comando `$ ghci main.hs`. Uma vez carregado, basta chamar a função percorrerPrograma passando uma string de um programa PDL préfixado, um grafo na forma de lista de arestas e custo e o nó de origem (exemplos são dados no código). A função retornará "True" se for um programa válido para o grafo e "False", caso contrário.
