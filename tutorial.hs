@@ -1,5 +1,7 @@
 import Debug.Trace
-programa = ";bU(;ba,U(c,a))"
+import Data.Strings
+
+programa = ";bU(c,;ab)"
 -- programa = ";aU(b,c)
 --Grafo de exemplo 
 grafo = [(1,2,'a'),(1,3,'b'),(3,4,'c'),(3,5,'a'),(5,6,'b')]
@@ -16,7 +18,6 @@ transicaoPossivel arestas exec
     | otherwise = False
 
 percorrerPrograma [] grafo noOrigem = let resp = True in resp
--- percorrerPrograma :: String->[(Int,Int,Char)]->Int->:t Bool 
 percorrerPrograma programa grafo noOrigem = 
   if head programa == ';'
     then let subprograma = head (tail programa)
@@ -28,8 +29,9 @@ percorrerPrograma programa grafo noOrigem =
                       in percorrerPrograma continuacao grafo (head destinos)  
                 else let resp = False in resp
     else if head programa == 'U'
-            then let subprograma = take (length (programa) -3) (drop 2 programa) 
-                  in resp
+            then let subprograma = take (length (programa) -3) (drop 2 programa)
+                     subprogramas = strSplit "," subprograma
+                  in (percorrerPrograma (fst subprogramas) grafo noOrigem) && ((percorrerPrograma (snd subprogramas) grafo noOrigem)) 
     else let subprograma = head programa
              vizinhos = getArestas grafo noOrigem
            in transicaoPossivel vizinhos subprograma
