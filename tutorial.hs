@@ -1,6 +1,6 @@
 programa = ";b;U(;aU(b,e),c)e"
 
-prog= ";b;U(ca,;U(a,c)b)z" 
+prog= ";b;U(c,;U(a,c)b)" 
 -- programa = ";aU(b,c)
 --Grafo de exemplo 
 -- concat (replicate 3 "coe")
