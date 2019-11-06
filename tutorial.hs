@@ -1,5 +1,6 @@
-programa = ";bU(U(a,c),;aU(b,e));e"
-prog= ";b;cz" 
+programa = ";b;U(a,c)z"
+
+prog= "U(a,b)" 
 -- programa = ";aU(b,c)
 --Grafo de exemplo 
 -- concat (replicate 3 "coe")
@@ -39,26 +40,35 @@ transicaoPossivel arestas exec
     | otherwise = False
 
 
-percorrerPrograma [] grafo noOrigem = [0]
+percorrerPrograma [] grafo noOrigem = 0
 percorrerPrograma programa grafo noOrigem = 
   if head programa == ';'
-    then let subprograma = head (tail programa)
-             vizinhos = getArestas grafo noOrigem
-          in if transicaoPossivel vizinhos subprograma
-                then let proximoNo = getDestino vizinhos
-                         continuacao = drop 2 programa
-                         destinos = getDestino vizinhos subprograma  
-                      in percorrerPrograma continuacao grafo (head destinos)  
-                else [noOrigem]
-                
-    -- else if head programa == 'U'
-    --         then let subprograma = (separarSubPrograma 0 (tail programa))
-    --                  subprograma1 = separarUniao 0 (drop 1 (init subprograma))
-    --                  subprograma2 = reverse (separarUniao 0 (reverse (drop 1 (init subprograma))))
-                    
-                  in ((percorrerPrograma subprograma1 grafo noOrigem) && ((percorrerPrograma subprograma2 grafo noOrigem)) && (percorrerPrograma (drop (length subprograma) programa) grafo noOrigem) ) 
+    then percorrerPrograma (tail programa) grafo noOrigem
+    -- then let subprograma = head (tail programa)
+    --          vizinhos = getArestas grafo noOrigem
+    --       in if transicaoPossivel vizinhos subprograma
+    --             then let proximoNo = getDestino vizinhos
+    --                      continuacao = drop 2 programa
+    --                      destinos = getDestino vizinhos subprograma  
+    --                   in percorrerPrograma continuacao grafo (head destinos)  
+    --             else noOrigem
+    else if head programa == 'U'
+            then let subprograma = (separarSubPrograma 0 (tail programa))
+                     subprograma1 = separarUniao 0 (drop 1 (init subprograma))
+                     subprograma2 = reverse (separarUniao 0 (reverse (drop 1 (init subprograma))))
+                     restoDoPrograma = drop (length subprograma) programa
+                     resultado1 = percorrerPrograma (';':subprograma1++restoDoPrograma) grafo noOrigem
+                     resultado2 = percorrerPrograma (';':subprograma2++restoDoPrograma) grafo noOrigem
+                  in if resultado1 == 0 || resultado2 == 0 
+                      then 0
+                    else if resultado1 /= 0
+                        then resultado1
+                    else resultado2 
     else let subprograma = head programa
              vizinhos = getArestas grafo noOrigem
            in if (transicaoPossivel vizinhos subprograma)
-                then [0]
-                else [noOrigem]
+                then let proximoNo = getDestino vizinhos
+                         continuacao = drop 1 programa
+                         destinos = getDestino vizinhos subprograma  
+                      in percorrerPrograma continuacao grafo (head destinos)
+                else noOrigem
