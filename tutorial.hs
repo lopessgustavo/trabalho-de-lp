@@ -1,6 +1,6 @@
-programa = ";b;U(a,c)z"
+programa = ";b;U(;aU(b,e),c)e"
 
-prog= "U(a,b)" 
+prog= ";b;U(ca,;U(a,c)b)z" 
 -- programa = ";aU(b,c)
 --Grafo de exemplo 
 -- concat (replicate 3 "coe")
@@ -56,7 +56,7 @@ percorrerPrograma programa grafo noOrigem =
             then let subprograma = (separarSubPrograma 0 (tail programa))
                      subprograma1 = separarUniao 0 (drop 1 (init subprograma))
                      subprograma2 = reverse (separarUniao 0 (reverse (drop 1 (init subprograma))))
-                     restoDoPrograma = drop (length subprograma) programa
+                     restoDoPrograma = drop (length subprograma+1) programa
                      resultado1 = percorrerPrograma (';':subprograma1++restoDoPrograma) grafo noOrigem
                      resultado2 = percorrerPrograma (';':subprograma2++restoDoPrograma) grafo noOrigem
                   in if resultado1 == 0 || resultado2 == 0 
