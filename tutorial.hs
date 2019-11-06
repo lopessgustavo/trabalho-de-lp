@@ -1,5 +1,5 @@
 programa = ";bU(U(a,c),;aU(b,e));e"
-prog= ";a;bc" 
+prog= ";b;cz" 
 -- programa = ";aU(b,c)
 --Grafo de exemplo 
 -- concat (replicate 3 "coe")
@@ -39,7 +39,7 @@ transicaoPossivel arestas exec
     | otherwise = False
 
 
-percorrerPrograma [] grafo noOrigem = let resp = True in resp
+percorrerPrograma [] grafo noOrigem = [0]
 percorrerPrograma programa grafo noOrigem = 
   if head programa == ';'
     then let subprograma = head (tail programa)
@@ -49,12 +49,16 @@ percorrerPrograma programa grafo noOrigem =
                          continuacao = drop 2 programa
                          destinos = getDestino vizinhos subprograma  
                       in percorrerPrograma continuacao grafo (head destinos)  
-                else let resp = False in resp
-    else if head programa == 'U'
-            then let subprograma = (separarSubPrograma 0 (tail programa))
-                     subprograma1 = separarUniao 0 (drop 1 (init subprograma))
-                     subprograma2 = reverse (separarUniao 0 (reverse (drop 1 (init subprograma))))
+                else [noOrigem]
+                
+    -- else if head programa == 'U'
+    --         then let subprograma = (separarSubPrograma 0 (tail programa))
+    --                  subprograma1 = separarUniao 0 (drop 1 (init subprograma))
+    --                  subprograma2 = reverse (separarUniao 0 (reverse (drop 1 (init subprograma))))
+                    
                   in ((percorrerPrograma subprograma1 grafo noOrigem) && ((percorrerPrograma subprograma2 grafo noOrigem)) && (percorrerPrograma (drop (length subprograma) programa) grafo noOrigem) ) 
     else let subprograma = head programa
              vizinhos = getArestas grafo noOrigem
-           in transicaoPossivel vizinhos subprograma
+           in if (transicaoPossivel vizinhos subprograma)
+                then [0]
+                else [noOrigem]
