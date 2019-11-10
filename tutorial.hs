@@ -1,10 +1,18 @@
 programa = ";b;U(;aU(b,e),c)e"
-
+prog1 = "*(b)a"
 prog= ";b;U(c,;U(a,c)b)" 
 -- programa = ";aU(b,c)
 --Grafo de exemplo 
 -- concat (replicate 3 "coe")
 grafo = [(1,2,'a'),(1,3,'b'),(3,4,'c'),(3,5,'a'),(5,6,'b'),(5,7,'e')]
+
+bruteforce subprog resto grafo noOrigem vezes =
+  if vezes < length grafo
+     then let repeticao = concat (replicate vezes subprog)
+              resp = percorrerPrograma (repeticao++resto) grafo noOrigem
+          in if resp == 0 then resp
+                else bruteforce subprog resto grafo noOrigem (vezes+1)
+      else noOrigem
 
 separarSubPrograma flag programa = 
   if (head programa) == ')' && ((flag-1) == 0)
@@ -30,8 +38,6 @@ separarUniao flag programa =
       (head programa):separarUniao flag (tail programa)    
 --Retorna as arestas de um nó do grafo
 getArestas grafo noOrigem = [(a,b,c) | (a,b,c)<-grafo, a==noOrigem]
-
-
 getDestino vizinhos programa = [b | (a,b,c)<-vizinhos, c == programa]
 
 --Retorna se é possível fazer a transicao dado o programa a executar
@@ -64,6 +70,10 @@ percorrerPrograma programa grafo noOrigem =
                     else if resultado1 /= 0
                         then resultado1
                     else resultado2 
+    else if head programa == '*'
+            then let subprograma = separarSubPrograma 0 (tail programa)
+                     restoDoPrograma = drop (length subprograma+1) programa
+                  in bruteforce (drop 1 (init subprograma)) restoDoPrograma grafo noOrigem 0
     else let subprograma = head programa
              vizinhos = getArestas grafo noOrigem
            in if (transicaoPossivel vizinhos subprograma)
