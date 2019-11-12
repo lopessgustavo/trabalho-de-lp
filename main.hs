@@ -3,9 +3,12 @@ programa = ";b;U(;aU(b,e),c)e"
 prog1 = "*(b*(b)a)e"
 prog= ";b;U(c,;U(a,c)b)" 
 
--- exemplo de grafo
+-- exemplo de grafo -> cada tupla é composta por um nó origem, um nó destino e o valor da aresta, que é um char
 grafo = [(1,2,'a'),(1,3,'b'),(3,4,'c'),(3,5,'a'),(5,6,'b'),(5,7,'e')]
--- Funcao que verifica as possibilidades repetindo o subprograma dentro do *
+grafo2 = [(1,2,'a'),(2,10,'j'),(2,11,'j'),(10,12,'k'),(11,14,'z'),(1,3,'b'),(3,4,'c'),(3,5,'a'),(5,6,'b'),(5,7,'e')]
+
+-- Funcao que verifica as possibilidades repetindo o subprograma dentro do *()
+-- Essa funçao replica o que esta dentro do parenteses e concatena com o que vem depois e chama a funçao principal
 bruteforce subprog resto grafo noOrigem vezes =
   if vezes < length grafo
      then let repeticao = concat (replicate vezes subprog)
@@ -13,6 +16,7 @@ bruteforce subprog resto grafo noOrigem vezes =
           in if resp == 0 then resp
                 else bruteforce subprog resto grafo noOrigem (vezes+1)
       else noOrigem
+
 -- Retorna o subprograma entre parenteses ex: U(a,b)bcd->U(a,b)
 separarSubPrograma flag programa = 
   if (head programa) == ')' && ((flag-1) == 0)
@@ -27,7 +31,6 @@ separarSubPrograma flag programa =
     else (head programa):separarSubPrograma flag (tail programa)
 
 -- Retorna a primeira parte da uniao ex: U(a,b) -> a
-separarUniao::Int->[Char]->[Char]
 separarUniao flag programa = 
   if (head programa) == ',' && (flag == 0)
     then let resp = [] in resp
@@ -37,8 +40,10 @@ separarUniao flag programa =
       then (head programa):separarUniao (flag-1) (tail programa)
     else
       (head programa):separarUniao flag (tail programa)    
+
 --Retorna as arestas de um nó do grafo
 getArestas grafo noOrigem = [(a,b,c) | (a,b,c)<-grafo, a==noOrigem]
+
 -- retorna os destinos de um nó após a execução de um programa
 getDestino vizinhos programa = [b | (a,b,c)<-vizinhos, c == programa]
 
@@ -52,7 +57,6 @@ percorrerPrograma [] grafo noOrigem = 0
 percorrerPrograma programa grafo noOrigem = 
   if head programa == ';'
     then percorrerPrograma (tail programa) grafo noOrigem
-
     else if head programa == 'U'
             then let subprograma = (separarSubPrograma 0 (tail programa))
                      subprograma1 = separarUniao 0 (drop 1 (init subprograma))
