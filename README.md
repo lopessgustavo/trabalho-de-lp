@@ -10,3 +10,11 @@
 - Para inserir um novo grafo é preciso criar uma nova variável que seja uma lista de adjacencias no formato (nó origem, nó destino, programa a ser executado), sendo ambos os nós do tipo Int e o programa deve ser um Char. Esse grafo deve ser inserido na execução do programa no ghci.
 	Ex: `novo_grafo = [(1,2,'a'), (1,3,'b'), (1,4,'c'), (2,5,'d'), (3,7,'a')]`
 - O programa deve ser escrito na forma prefixiada. Entretanto, as execuções são caracteres.
+	 - Sequencia: o ";" é opcional uma vez que as execuçoes sao caracteres.
+	 	Ex: `abc` ou `;a;bc`
+	- Uniao: 
+		Ex: `U(a,b)`
+	- Iteracao :
+		Ex: `*(b)`
+- Para verificar se é um programa válido, é necessário chamar a funçao percorrerPrograma `percorrerPrograma programa grafo noOrigem`.
+	 - Onde programa é um programa PDL, grafo é um grafo no formato descrito acima e noOrigem é o nó de onde começa a execuçao (geralmente 1).
